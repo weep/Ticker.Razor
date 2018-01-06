@@ -1,0 +1,35 @@
+﻿@page
+@model Ticker.Razor.Pages.Portfolio.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+<div>
+    <h2>Index of Portfolio</h2>
+    @if (Model.LoggedIn)
+    {
+        <div>
+            <h3>@Model.Seed</h3>
+            <form method="post">
+                <button type="submit" asp-page-handler="Logout">Logout</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div>
+            <form method="post">
+                <div style="display:@(Model.HasErrorMessage ? "" : "hidden"))">
+                    @Model.ErrorMessage
+                </div>
+                <div>
+                    <input type="text" name="seed" value="@Model.Seed" />
+                    <button type="submit" asp-page-handler="Login">Login</button>
+                    <button type="submit" asp-page-handler="New">New</button>
+                </div>
+            </form>
+        </div>
+    }
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

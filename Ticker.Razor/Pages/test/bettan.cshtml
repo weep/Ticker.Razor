@@ -1,0 +1,14 @@
+﻿@page
+@model Ticker.Razor.Pages.test.bettanModel
+@{
+    ViewData["Title"] = "bettan";
+
+    var claims = HttpContext.User.Claims;
+    string claimsJoined = String.Join(", ", claims);
+}
+
+<h2>bettan @claimsJoined @claims.Count()</h2>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
