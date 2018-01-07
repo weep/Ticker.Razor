@@ -10,7 +10,7 @@ using Ticker.Razor.Infrastructure.Models;
 
 namespace Ticker.Razor.Pages.Markets
 {
-    public class IndexModel : PageModel
+    public class IndexModel : RTPageModel
     {
         private readonly ISession _session;
         private readonly IMarketApi _api;

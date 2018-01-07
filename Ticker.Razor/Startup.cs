@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Ticker.Razor.Infrastructure;
+using System;
 using System.Net.Http;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Ticker.Razor.Infrastructure;
 
 namespace Ticker.Razor
 {
@@ -25,24 +22,14 @@ namespace Ticker.Razor
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSession(s => s.IdleTimeout = TimeSpan.FromMinutes(30));
-            services.AddAuthentication(o =>
-            {
-                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(o =>
-            {
-                o.Audience = Configuration["Settings:Authentication:ApiName"];
-                o.Authority = Configuration["Settings:Authentication:Authority"];
-                //o.RequireHttpsMetadata = !CurrentEnvironment.IsDevelopment();
-            });
 
             services.AddMvc().AddRazorPagesOptions(options =>
             {
-                //options.Conventions.AuthorizeFolder("/portfolio");
-                options.Conventions.AuthorizeFolder("/account/login");
-                //options.Conventions.AllowAnonymousToPage("/account/login");
+                options.Conventions.AuthorizeFolder("/markets");
             });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
 
             services.AddSingleton<HttpClient>();
             services.AddTransient<IMarketApi, CoinMarketCapApi>();
@@ -67,7 +54,9 @@ namespace Ticker.Razor
 
             app.UseStaticFiles();
 
+
             app.UseSession();
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

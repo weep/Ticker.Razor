@@ -1,0 +1,12 @@
+﻿@page
+@model Ticker.Razor.Pages.Account.SignedOutModel
+@{
+    ViewData["Title"] = "SignedOut";
+}
+
+<h1>Signed out</h1>
+<p>You've successfully signed out. Click <a asp-route="/account/login">here</a> to sign in again.</p>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
